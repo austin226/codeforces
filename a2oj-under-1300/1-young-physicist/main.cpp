@@ -2,7 +2,7 @@
 #include <string>
 
 int main() {
-    int 
-    std::cin >> 
+    int nLines;
+    std::cin >> nLines;
     std::cout << "Hi" << std::endl;
 }
