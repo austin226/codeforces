@@ -2,7 +2,8 @@
     "files.associations": {
         "regex": "cpp",
         "string": "cpp",
-        "istream": "cpp"
+        "istream": "cpp",
+        "xiosbase": "cpp"
     },
     "editor.formatOnSave": true
 }
