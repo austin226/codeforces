@@ -15,8 +15,8 @@ int main()
     cin >> n_visitors;
 
     // Get the time each visitor will arrive
-    uint16_t registers = 1;
-    map<uint16_t, uint16_t> time_frequencies;
+    int registers = 1;
+    map<int, int> time_frequencies;
     for (int i = 0; i < n_visitors; i++)
     {
         // Each line has h_i and m_i
@@ -29,7 +29,7 @@ int main()
         cin >> m_i;
 
         // 0 <= minutes <= 1439
-        uint16_t minutes = 60 * h_i + m_i;
+        int minutes = 60 * h_i + m_i;
 
         auto freq = time_frequencies.find(minutes);
         if (freq == time_frequencies.end())
@@ -40,7 +40,7 @@ int main()
         else
         {
             // Multiple clients have this time
-            uint16_t new_freq = freq->second + 1;
+            int new_freq = freq->second + 1;
             if (new_freq > registers)
             {
                 // This is the most popular time - add a cash register
