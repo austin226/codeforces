@@ -2,5 +2,6 @@
     "files.associations": {
         "regex": "cpp",
         "string": "cpp"
-    }
+    },
+    "editor.formatOnSave": true
 }
