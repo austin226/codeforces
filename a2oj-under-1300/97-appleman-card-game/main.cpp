@@ -55,11 +55,6 @@ int main()
         }
     }
 
-    for (pair<int, char> freq_letter : letter_frequencies)
-    {
-        cout << "The letter " << freq_letter.second << " appears " << freq_letter.first << " times" << endl;
-    }
-
     // Calculate the maximum number of coins
     // 1 <= total_coins <= (10^5 * 10^5 = 10^10)
     uint64_t total_coins = 0;
