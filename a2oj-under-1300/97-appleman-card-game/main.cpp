@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <iostream>
 #include <optional>
-#include <set>
+#include <vector>
 
 using namespace std;
 
@@ -30,8 +30,7 @@ int main()
     sort(card_letters.begin(), card_letters.end());
 
     // Collect the frequencies of each letter
-    // set will automatically sort by frequency, descending
-    set<pair<int, char>, std::greater<pair<int, char>>> letter_frequencies;
+    vector<int> letter_frequencies;
     optional<char> prev_letter;
     int prev_letter_freq = 0;
     for (char curr_letter : card_letters)
@@ -42,7 +41,7 @@ int main()
             if (prev_letter.has_value())
             {
                 // Record the frequency of the previous letter and add it to the set.
-                letter_frequencies.insert(make_pair(prev_letter_freq, prev_letter.value()));
+                letter_frequencies.push_back(prev_letter_freq);
             }
 
             prev_letter.emplace(curr_letter);
@@ -55,7 +54,8 @@ int main()
         }
     }
     // Count frequency for the last letter.
-    letter_frequencies.insert(make_pair(prev_letter_freq, prev_letter.value()));
+    letter_frequencies.push_back(prev_letter_freq);
+    sort(letter_frequencies.begin(), letter_frequencies.end(), std::greater<>());
 
     // Calculate the maximum number of coins
     // 1 <= total_coins <= (10^5 * 10^5 = 10^10)
@@ -63,10 +63,8 @@ int main()
     int cards_remaining = k_selected;
     for (int i = 0; i < k_selected && cards_remaining > 0; i++)
     {
-        for (pair<int, char> freq_letter : letter_frequencies)
+        for (int freq : letter_frequencies)
         {
-            int freq = freq_letter.first;
-
             // The number of cards of this letter that we can select
             uint64_t this_letter_selected = min(cards_remaining, freq);
             cards_remaining -= this_letter_selected;
