@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <iostream>
+#include <memory>
 #include <optional>
 #include <vector>
 
@@ -7,10 +8,10 @@ using namespace std;
 
 // Returns a vector of letter frequencies, sorted descending.
 // The input string must be sorted.
-vector<int> count_letter_frequencies(const string &letters)
+unique_ptr<vector<int>> count_letter_frequencies(const string &letters)
 {
     // Collect the frequencies of each letter
-    vector<int> letter_frequencies;
+    auto letter_frequencies = make_unique<vector<int>>();
     optional<char> prev_letter;
     int prev_letter_freq = 0;
     for (char curr_letter : letters)
@@ -21,7 +22,7 @@ vector<int> count_letter_frequencies(const string &letters)
             if (prev_letter.has_value())
             {
                 // Record the frequency of the previous letter and add it to the set.
-                letter_frequencies.push_back(prev_letter_freq);
+                letter_frequencies->push_back(prev_letter_freq);
             }
 
             prev_letter.emplace(curr_letter);
@@ -34,10 +35,10 @@ vector<int> count_letter_frequencies(const string &letters)
         }
     }
     // Count frequency for the last letter.
-    letter_frequencies.push_back(prev_letter_freq);
+    letter_frequencies->push_back(prev_letter_freq);
 
     // Sort the vector.
-    sort(letter_frequencies.begin(), letter_frequencies.end(), std::greater<>());
+    sort(letter_frequencies->begin(), letter_frequencies->end(), std::greater<>());
     return letter_frequencies;
 }
 
@@ -66,7 +67,7 @@ int main()
     sort(card_letters.begin(), card_letters.end());
 
     // Collect the frequencies of each letter
-    vector<int> letter_frequencies = count_letter_frequencies(card_letters);
+    unique_ptr<vector<int>> letter_frequencies = count_letter_frequencies(card_letters);
 
     // Calculate the maximum number of coins
     // 1 <= total_coins <= (10^5 * 10^5 = 10^10)
@@ -74,7 +75,7 @@ int main()
     int cards_remaining = k_selected;
     for (int i = 0; i < k_selected && cards_remaining > 0; i++)
     {
-        for (int freq : letter_frequencies)
+        for (int freq : *letter_frequencies)
         {
             // The number of cards of this letter that we can select
             uint64_t this_letter_selected = min(cards_remaining, freq);
