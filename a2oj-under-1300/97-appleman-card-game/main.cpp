@@ -54,6 +54,8 @@ int main()
             prev_letter_freq++;
         }
     }
+    // Count frequency for the last letter.
+    letter_frequencies.insert(make_pair(prev_letter_freq, prev_letter.value()));
 
     // Calculate the maximum number of coins
     // 1 <= total_coins <= (10^5 * 10^5 = 10^10)
@@ -64,7 +66,6 @@ int main()
         for (pair<int, char> freq_letter : letter_frequencies)
         {
             int freq = freq_letter.first;
-            int letter = freq_letter.second;
 
             // The number of cards of this letter that we can select
             uint64_t this_letter_selected = min(cards_remaining, freq);
