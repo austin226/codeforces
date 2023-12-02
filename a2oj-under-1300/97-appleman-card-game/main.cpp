@@ -5,6 +5,42 @@
 
 using namespace std;
 
+// Returns a vector of letter frequencies, sorted descending.
+// The input string must be sorted.
+vector<int> count_letter_frequencies(const string &letters)
+{
+    // Collect the frequencies of each letter
+    vector<int> letter_frequencies;
+    optional<char> prev_letter;
+    int prev_letter_freq = 0;
+    for (char curr_letter : letters)
+    {
+        if (!prev_letter.has_value() || prev_letter.value() != curr_letter)
+        {
+            // We've reached a new letter.
+            if (prev_letter.has_value())
+            {
+                // Record the frequency of the previous letter and add it to the set.
+                letter_frequencies.push_back(prev_letter_freq);
+            }
+
+            prev_letter.emplace(curr_letter);
+            prev_letter_freq = 1;
+        }
+        else
+        {
+            // We're still on the same letter as before.
+            prev_letter_freq++;
+        }
+    }
+    // Count frequency for the last letter.
+    letter_frequencies.push_back(prev_letter_freq);
+
+    // Sort the vector.
+    sort(letter_frequencies.begin(), letter_frequencies.end(), std::greater<>());
+    return letter_frequencies;
+}
+
 // https://codeforces.com/problemset/problem/462/B
 int main()
 {
@@ -30,32 +66,7 @@ int main()
     sort(card_letters.begin(), card_letters.end());
 
     // Collect the frequencies of each letter
-    vector<int> letter_frequencies;
-    optional<char> prev_letter;
-    int prev_letter_freq = 0;
-    for (char curr_letter : card_letters)
-    {
-        if (!prev_letter.has_value() || prev_letter.value() != curr_letter)
-        {
-            // We've reached a new letter.
-            if (prev_letter.has_value())
-            {
-                // Record the frequency of the previous letter and add it to the set.
-                letter_frequencies.push_back(prev_letter_freq);
-            }
-
-            prev_letter.emplace(curr_letter);
-            prev_letter_freq = 1;
-        }
-        else
-        {
-            // We're still on the same letter as before.
-            prev_letter_freq++;
-        }
-    }
-    // Count frequency for the last letter.
-    letter_frequencies.push_back(prev_letter_freq);
-    sort(letter_frequencies.begin(), letter_frequencies.end(), std::greater<>());
+    vector<int> letter_frequencies = count_letter_frequencies(card_letters);
 
     // Calculate the maximum number of coins
     // 1 <= total_coins <= (10^5 * 10^5 = 10^10)
