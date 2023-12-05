@@ -14,7 +14,7 @@ using namespace std;
 uint64_t parse_with_base(string str, int a)
 {
     uint64_t str_val = 0;
-    uint64_t place_value = (int)floor(pow((double)a, str.length() - 1));
+    uint64_t place_value = (uint64_t)floor(pow((double)a, str.length() - 1));
     for (char c : str)
     {
         // c is a digit in base a
@@ -59,7 +59,14 @@ string convert_to_base(uint64_t n, int base)
         if (!(this_digit == 0 && is_leading_zero))
         {
             is_leading_zero = false;
-            ss << this_digit;
+            if (this_digit >= 10)
+            {
+                ss << char('A' + (this_digit - 10));
+            }
+            else
+            {
+                ss << this_digit;
+            }
         }
         n %= place_value;
         place--;
