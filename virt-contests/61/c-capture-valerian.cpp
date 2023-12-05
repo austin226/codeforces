@@ -11,6 +11,11 @@
 
 using namespace std;
 
+void remove_leading(string input, const char char_to_remove)
+{
+    input.erase(0, min(input.find_first_not_of(char_to_remove), input.size() - 1));
+}
+
 uint64_t parse_with_base(string str, int a)
 {
     uint64_t str_val = 0;
@@ -134,6 +139,8 @@ int main()
     int a;
     string b, c;
     cin >> a >> b >> c;
+
+    remove_leading(b, '0');
 
     uint64_t a_int = parse_with_base(c, a);
     if (b == "R")
