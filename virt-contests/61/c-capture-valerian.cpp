@@ -67,10 +67,50 @@ string convert_to_base(uint64_t n, int base)
     return ss.str();
 }
 
+string convert_to_roman(uint64_t n, char one, char five, char ten)
+{
+    stringstream ss;
+    if (n == 9)
+    {
+        ss << one << ten;
+    }
+    else if (n >= 5)
+    {
+        ss << five;
+        for (int i = 0; i < n - 5; i++)
+        {
+            ss << one;
+        }
+    }
+    else if (n == 4)
+    {
+        ss << one << five;
+    }
+    else
+    {
+        for (int i = 0; i < n; i++)
+        {
+            ss << one;
+        }
+    }
+    return ss.str();
+}
+
 string convert_to_roman(uint64_t n)
 {
-    // TODO
-    return "C";
+    // n <= 3000 and won't be 0.
+    stringstream ss;
+    ss << convert_to_roman(n / 1000, 'M', '?', '?');
+    n %= 1000;
+
+    ss << convert_to_roman(n / 100, 'C', 'D', 'M');
+    n %= 100;
+
+    ss << convert_to_roman(n / 10, 'X', 'L', 'C');
+    n %= 10;
+
+    ss << convert_to_roman(n / 1, 'I', 'V', 'X');
+    return ss.str();
 }
 
 int main()
