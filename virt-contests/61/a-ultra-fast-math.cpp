@@ -1,7 +1,6 @@
 // https://codeforces.com/contest/61/problem/A
 
 #include <iostream>
-#include <map>
 
 using namespace std;
 
