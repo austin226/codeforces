@@ -12,20 +12,32 @@
 using namespace std;
 
 uint64_t count_larger_is(int j, vector<uint32_t> &powers) {
-  // TODO
-  return 1;
+  uint64_t sum = 0;
+
+  for (size_t i = 0; i < j; i++) {
+    if (powers[i] > powers[j]) {
+      sum++;
+    }
+  }
+
+  return sum;
 }
 
 uint64_t count_larger_js(int k, vector<uint32_t> &powers) {
-  // TODO
-  return 1;
+  uint64_t sum = 0;
+
+  for (size_t j = 0; j < k; j++) {
+    if (powers[j] > powers[k]) {
+      sum += count_larger_is(j, powers);
+    }
+  }
+
+  return sum;
 }
 
 int main() {
-  cout << " Hello";
-  return 0;
   // 3 <= n <= 10^6
-  int n;
+  size_t n;
   cin >> n;
 
   // All powers are distinct. Each power is in (0..=10^9)
@@ -33,19 +45,19 @@ int main() {
   powers->reserve(n);
 
   uint64_t sum = 0;
-  for (int soldier = 0; soldier < n; soldier++) {
+  for (size_t k = 0; k < n; k++) {
     uint32_t a;
     cin >> a;
 
     powers->push_back(a);
 
-    if (soldier <= 1) {
+    if (k <= 1) {
       continue;
     }
 
     // Count the number of triplets (i,j,k) to the left of a, such that i < j <
     // k; and a[i] > a[j] > a[k]
-    sum += count_larger_js(soldier, *powers);
+    sum += count_larger_js(k, *powers);
   }
 
   cout << sum << endl;
