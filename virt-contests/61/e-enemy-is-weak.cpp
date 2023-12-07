@@ -4,6 +4,7 @@
 #include <cctype>
 #include <cmath>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <set>
 #include <sstream>
@@ -11,7 +12,14 @@
 
 using namespace std;
 
-uint64_t count_larger_is(int j, vector<uint32_t> &powers) {
+#define _cache map<size_t, uint64_t>
+
+uint64_t count_larger_is(size_t j, vector<uint32_t> &powers, _cache &cache) {
+  auto it = cache.find(j);
+  if (it != cache.end()) {
+    return it->second;
+  }
+
   uint64_t sum = 0;
 
   for (size_t i = 0; i < j; i++) {
@@ -19,16 +27,17 @@ uint64_t count_larger_is(int j, vector<uint32_t> &powers) {
       sum++;
     }
   }
+  cache[j] = sum;
 
   return sum;
 }
 
-uint64_t count_larger_js(int k, vector<uint32_t> &powers) {
+uint64_t count_larger_js(size_t k, vector<uint32_t> &powers, _cache &cache) {
   uint64_t sum = 0;
 
   for (size_t j = 0; j < k; j++) {
     if (powers[j] > powers[k]) {
-      sum += count_larger_is(j, powers);
+      sum += count_larger_is(j, powers, cache);
     }
   }
 
@@ -44,6 +53,7 @@ int main() {
   auto powers = std::make_unique<vector<uint32_t>>();
   powers->reserve(n);
 
+  _cache larger_is_cache;
   uint64_t sum = 0;
   for (size_t k = 0; k < n; k++) {
     uint32_t a;
@@ -57,7 +67,7 @@ int main() {
 
     // Count the number of triplets (i,j,k) to the left of a, such that i < j <
     // k; and a[i] > a[j] > a[k]
-    sum += count_larger_js(k, *powers);
+    sum += count_larger_js(k, *powers, larger_is_cache);
   }
 
   cout << sum << endl;
