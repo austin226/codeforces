@@ -20,8 +20,6 @@
 	"codeforces-c++-snippet": {
 	"prefix": "codeforces-cpp",
 	"body": [
-		"//",
-		"",
 		"#include <algorithm>",
 		"#include <cctype>",
 		"#include <cmath>",
