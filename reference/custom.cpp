@@ -4,6 +4,7 @@
 #include <cctype>
 #include <cmath>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <set>
 #include <sstream>
