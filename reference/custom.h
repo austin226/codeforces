@@ -28,8 +28,7 @@ void remove_trailing(string& input, const char char_to_remove) {
 /// @tparam N Identifier to use for each node.
 /// @tparam W Weight of each edge between nodes.
 template <typename N, typename W>
-class Edge {
- public:
+struct Edge {
   N a;
   N b;
   W weight;
@@ -76,18 +75,13 @@ class WeightedGraph {
   /// @param start
   /// @return map of every node, to the distance it is from the start node.
   map<N, W> Dijkstra(N start) const {
-    // TODO use DP to cache previously visited nodes
-    // TODO use dijkstra
-
-    // Find neighbors of starting node
-    // TODO Implemnt dijkstra
-
     map<N, W> dist;
     dist[start] = 0;
 
     priority_queue<pair<W, N>> q;
     for (N node : nodes) {
       if (node != start) {
+        // TODO - bug! Can't use max value due to overflow
         dist[node] = numeric_limits<N>::max();
         // prev[node] = undefined
       }
@@ -95,25 +89,25 @@ class WeightedGraph {
     }
 
     while (!q.empty()) {
-      N best_vertex = q.top().second;
+      N u = q.top().second;
       q.pop();
-      if (neighbors_map.contains(best_vertex)) {
-        auto range = neighbors_map.equal_range(best_vertex);
+      if (neighbors_map.contains(u)) {
+        auto range = neighbors_map.equal_range(u);
         for (auto it = range.first; it != range.second; it++) {
-          // For each neighbor of best_vertex
+          // For each neighbor v of u
           E edge = it->second;
-          N neighbor = edge.GetOtherEnd(best_vertex);
-          W alt_dist = dist[best_vertex] + edge.weight;
-          if (alt_dist < dist[neighbor]) {
-            dist[neighbor] = alt_dist;
-            // prev[neighbor] = best_vertex
+          N v = edge.GetOtherEnd(u);
+          W alt_dist = dist[u] + edge.weight;
+          if (alt_dist < dist[v]) {
+            dist[v] = alt_dist;
+            // prev[v] = u
 
-            // Decrease priority of neighbor by alt
+            // Decrease priority of v by alt
             // Since STL priority_queue doesn't support decrease by key,
-            // we instead just add another instance of neighbor at lower
+            // we instead just add another instance of v at lower
             // priority.
             // https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-using-priority_queue-stl/
-            q.push({dist[neighbor], neighbor});
+            q.push({dist[v], v});
           }
         }
       }
