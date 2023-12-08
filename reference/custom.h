@@ -7,6 +7,7 @@
 #include <limits>
 #include <map>
 #include <memory>
+#include <optional>
 #include <queue>
 #include <set>
 #include <sstream>
@@ -48,9 +49,9 @@ template <typename N, typename W>
 class WeightedGraph {
  private:
   using E = Edge<N, W>;
-  set<N> nodes;
-  vector<E> edges;
-  multimap<N, E> neighbors_map;
+  std::set<N> nodes;
+  std::vector<E> edges;
+  std::multimap<N, E> neighbors_map;
 
  public:
   WeightedGraph() {}
@@ -73,42 +74,47 @@ class WeightedGraph {
   /// @brief Uses Dijkstra's algorithm to calculate the shortest distance from
   /// the starting node to all other nodes.
   /// @param start
-  /// @return map of every node, to the distance it is from the start node.
-  map<N, W> Dijkstra(N start) const {
-    map<N, W> dist;
-    dist[start] = 0;
+  /// @return map of every node, to the distance it is from the start node. If
+  /// the distance is not present, there is no path to that node.
+  std::map<N, std::optional<W>> Dijkstra(N start) const {
+    std::map<N, std::optional<W>> dist;
+    dist[start] = std::optional(0);
 
-    priority_queue<pair<W, N>> q;
+    using PWN = std::pair<W, N>;
+    std::priority_queue<PWN, std::vector<PWN>, std::greater<PWN>> q;
     for (N node : nodes) {
       if (node != start) {
-        // TODO - bug! Can't use max value due to overflow
-        dist[node] = numeric_limits<N>::max();
+        dist[node] = nullopt;
         // prev[node] = undefined
       }
-      q.push({dist[node], node});
+
+      W priority = dist[node].value_or(std::numeric_limits<W>::max());
+      q.push({priority, node});
     }
 
     while (!q.empty()) {
       N u = q.top().second;
       q.pop();
-      if (neighbors_map.contains(u)) {
-        auto range = neighbors_map.equal_range(u);
-        for (auto it = range.first; it != range.second; it++) {
-          // For each neighbor v of u
-          E edge = it->second;
-          N v = edge.GetOtherEnd(u);
-          W alt_dist = dist[u] + edge.weight;
-          if (alt_dist < dist[v]) {
-            dist[v] = alt_dist;
-            // prev[v] = u
+      if (!neighbors_map.contains(u)) {
+        continue;
+      }
+      auto range = neighbors_map.equal_range(u);
+      for (auto it = range.first; it != range.second; it++) {
+        // For each neighbor v of u
+        E edge = it->second;
+        N v = edge.GetOtherEnd(u);
+        W alt_dist = edge.weight + dist[u].value();
 
-            // Decrease priority of v by alt
-            // Since STL priority_queue doesn't support decrease by key,
-            // we instead just add another instance of v at lower
-            // priority.
-            // https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-using-priority_queue-stl/
-            q.push({dist[v], v});
-          }
+        if (!dist[v].has_value() || alt_dist < dist[v]) {
+          dist[v] = alt_dist;
+          // prev[v] = u
+
+          // Decrease priority of v by alt
+          // Since STL priority_queue doesn't support decrease by key,
+          // we instead just add another instance of v at lower
+          // priority.
+          // https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-using-priority_queue-stl/
+          q.push({alt_dist, v});
         }
       }
     }
