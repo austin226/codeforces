@@ -1,5 +1,3 @@
-// https://codeforces.com/contest/61/problem/D
-
 #include <algorithm>
 #include <cctype>
 #include <cmath>
@@ -7,6 +5,7 @@
 #include <limits>
 #include <map>
 #include <memory>
+#include <optional>
 #include <queue>
 #include <set>
 #include <sstream>
@@ -24,9 +23,11 @@ void remove_trailing(string& input, const char char_to_remove) {
   input.erase(input.find_last_not_of(char_to_remove) + 1, string::npos);
 }
 
+/// @brief  A weighted edge in a graph.
+/// @tparam N Identifier to use for each node.
+/// @tparam W Weight of each edge between nodes.
 template <typename N, typename W>
-class Edge {
- public:
+struct Edge {
   N a;
   N b;
   W weight;
@@ -39,23 +40,29 @@ class Edge {
   }
 };
 
-/// A weighted, undirected graph.
-template <typename N, typename W, typename S>
+/// @brief A weighted, undirected graph.
+/// @tparam N Identifier to use for each node.
+/// @tparam W Weight of each edge between nodes.
+template <typename N, typename W>
 class WeightedGraph {
  private:
   using E = Edge<N, W>;
-  set<N> nodes;
-  vector<E> edges;
-  multimap<N, E> neighbors_map;
+  std::set<N> nodes;
+  std::vector<E> edges;
+  std::multimap<N, E> neighbors_map;
 
  public:
-  WeightedGraph(S size) { edges.reserve(size); }
+  WeightedGraph() {}
+  WeightedGraph(size_t size) { edges.reserve(size); }
 
   void AddNode(N node) { nodes.insert(node); }
 
   const set<N>& GetNodes() const { return nodes; }
 
   void AddEdge(N node_a, N node_b, W weight) {
+    if (!nodes.contains(node_a) || !nodes.contains(node_b)) {
+      throw runtime_error("Cannot connect edge - node not found");
+    }
     E edge = {min(node_a, node_b), max(node_a, node_b), weight};
     edges.push_back(edge);
     neighbors_map.insert({node_a, edge});
@@ -65,52 +72,68 @@ class WeightedGraph {
   /// @brief Uses Dijkstra's algorithm to calculate the shortest distance from
   /// the starting node to all other nodes.
   /// @param start
-  /// @return map of every node, to the distance it is from the start node.
-  map<N, W> Dijkstra(N start) const {
-    // TODO use DP to cache previously visited nodes
-    // TODO use dijkstra
+  /// @return map of every node, to the distance it is from the start node. If
+  /// the distance is not present, there is no path to that node.
+  std::map<N, std::optional<W>> Dijkstra(N start) const {
+    std::map<N, std::optional<W>> dist;
+    dist[start] = std::optional(0);
 
-    // Find neighbors of starting node
-    // TODO Implemnt dijkstra
-
-    map<N, W> dist;
-    dist[start] = 0;
-
-    priority_queue<pair<W, N>> q;
+    using PWN = std::pair<W, N>;
+    std::priority_queue<PWN, std::vector<PWN>, std::greater<PWN>> q;
     for (N node : nodes) {
       if (node != start) {
-        dist[node] = numeric_limits<N>::max();
+        dist[node] = nullopt;
         // prev[node] = undefined
       }
-      q.push({dist[node], node});
+
+      W priority = dist[node].value_or(std::numeric_limits<W>::max());
+      q.push({priority, node});
     }
 
     while (!q.empty()) {
-      N best_vertex = q.top().second;
+      N u = q.top().second;
       q.pop();
-      if (neighbors_map.contains(best_vertex)) {
-        auto range = neighbors_map.equal_range(best_vertex);
-        for (auto it = range.first; it != range.second; it++) {
-          // For each neighbor of best_vertex
-          E edge = it->second;
-          N neighbor = edge.GetOtherEnd(best_vertex);
-          W alt_dist = dist[best_vertex] + edge.weight;
-          if (alt_dist < dist[neighbor]) {
-            dist[neighbor] = alt_dist;
-            // prev[neighbor] = best_vertex
+      if (!neighbors_map.contains(u)) {
+        continue;
+      }
+      auto range = neighbors_map.equal_range(u);
+      for (auto it = range.first; it != range.second; it++) {
+        // For each neighbor v of u
+        E edge = it->second;
+        N v = edge.GetOtherEnd(u);
+        W alt_dist = edge.weight + dist[u].value();
 
-            // Decrease priority of neighbor by alt
-            // Since STL priority_queue doesn't support decrease by key,
-            // we instead just add another instance of neighbor at lower
-            // priority.
-            // https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-using-priority_queue-stl/
-            q.push({dist[neighbor], neighbor});
-          }
+        if (!dist[v].has_value() || alt_dist < dist[v]) {
+          dist[v] = alt_dist;
+          // prev[v] = u
+
+          // Decrease priority of v by alt
+          // Since STL priority_queue doesn't support decrease by key,
+          // we instead just add another instance of v at lower
+          // priority.
+          // https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-using-priority_queue-stl/
+          q.push({alt_dist, v});
         }
       }
     }
 
     return dist;
+  }
+
+  void DebugPrintDijkstra() {
+    for (N start : this->GetNodes()) {
+      std::cout << start << " distances:" << std::endl;
+      std::map<N, std::optional<W>> distances = this->Dijkstra(start);
+      for (N other_node : this->GetNodes()) {
+        string d;
+        if (distances[other_node].has_value()) {
+          d = std::to_string(distances[other_node].value());
+        } else {
+          d = "unknown";
+        }
+        std::cout << "to " << other_node << ": " << d << std::endl;
+      }
+    }
   }
 };
 
@@ -121,7 +144,7 @@ int main() {
   uint16_t n_cities;
   cin >> n_cities;
 
-  WeightedGraph<uint16_t, uint16_t, uint16_t> g(n_cities - 1);
+  WeightedGraph<uint16_t, uint16_t> g(n_cities - 1);
   for (uint16_t i = 0; i < n_cities - 1; i++) {
     // 1 <= x[i], y[i] <= n, 0 <= w[i] <= 2 × 10^4)
     // x and y are node indexes.
@@ -135,8 +158,8 @@ int main() {
   }
 
   // calculate the minimum length to visit every node.
+  g.DebugPrintDijkstra();
   for (uint16_t node : g.GetNodes()) {
-    cout << node << endl;
+    map<uint16_t, optional<uint16_t>> distances = g.Dijkstra(node);
   }
-  // cout << "Distance 1 to 2 is " << distance << endl;
 }
