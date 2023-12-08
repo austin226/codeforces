@@ -56,7 +56,17 @@
         "list": "cpp",
         "ranges": "cpp",
         "span": "cpp",
-        "xhash": "cpp"
+        "xhash": "cpp",
+        "csignal": "cpp",
+        "fstream": "cpp",
+        "iomanip": "cpp",
+        "mutex": "cpp",
+        "ratio": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp",
+        "unordered_set": "cpp",
+        "xlocmon": "cpp",
+        "xloctime": "cpp"
     },
     "editor.formatOnSave": true
 }

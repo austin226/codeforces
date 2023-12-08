@@ -121,4 +121,20 @@ class WeightedGraph {
 
     return dist;
   }
+
+  void DebugPrintDijkstra() {
+    for (N start : this->GetNodes()) {
+      std::cout << start << " distances:" << std::endl;
+      std::map<N, std::optional<W>> distances = this->Dijkstra(start);
+      for (N other_node : this->GetNodes()) {
+        string d;
+        if (distances[other_node].has_value()) {
+          d = std::to_string(distances[other_node].value());
+        } else {
+          d = "unknown";
+        }
+        std::cout << "to " << other_node << ": " << d << std::endl;
+      }
+    }
+  }
 };
