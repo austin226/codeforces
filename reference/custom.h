@@ -25,8 +25,8 @@ void remove_trailing(string& input, const char char_to_remove) {
 }
 
 /// @brief  A weighted edge in a graph.
-/// @tparam N 
-/// @tparam W 
+/// @tparam N Identifier to use for each node.
+/// @tparam W Weight of each edge between nodes.
 template <typename N, typename W>
 class Edge {
  public:
@@ -42,8 +42,10 @@ class Edge {
   }
 };
 
-/// A weighted, undirected graph.
-template <typename N, typename W, typename S>
+/// @brief A weighted, undirected graph.
+/// @tparam N Identifier to use for each node.
+/// @tparam W Weight of each edge between nodes.
+template <typename N, typename W>
 class WeightedGraph {
  private:
   using E = Edge<N, W>;
@@ -52,7 +54,8 @@ class WeightedGraph {
   multimap<N, E> neighbors_map;
 
  public:
-  WeightedGraph(S size) { edges.reserve(size); }
+  WeightedGraph() {}
+  WeightedGraph(size_t size) { edges.reserve(size); }
 
   void AddNode(N node) { nodes.insert(node); }
 
