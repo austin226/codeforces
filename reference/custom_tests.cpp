@@ -62,27 +62,27 @@ TEST_CASE("Numeric weighted graph") {
   SUBCASE("Dijkstra returns distances to neighbors") {
     using M = map<uint16_t, optional<uint16_t>>;
     SUBCASE("distance from 1") {
-    M dist_1 = g.Dijkstra(1);
-    CHECK_EQ(3, dist_1.size());
-    CHECK_EQ(0, dist_1[1].value_or(-1));
-    CHECK_EQ(3, dist_1[2].value_or(-1));
-    CHECK_EQ(3, dist_1[3].value_or(-1));
+      M dist_1 = g.Dijkstra(1);
+      CHECK_EQ(3, dist_1.size());
+      CHECK_EQ(0, dist_1[1].value_or(-1));
+      CHECK_EQ(3, dist_1[2].value_or(-1));
+      CHECK_EQ(3, dist_1[3].value_or(-1));
     }
 
     SUBCASE("distance from 2") {
-    M dist_2 = g.Dijkstra(2);
-    CHECK_EQ(3, dist_2.size());
-    CHECK_EQ(3, dist_2[1].value_or(-1));
-    CHECK_EQ(0, dist_2[2].value_or(-1));
-    CHECK_EQ(6, dist_2[3].value_or(-1));
+      M dist_2 = g.Dijkstra(2);
+      CHECK_EQ(3, dist_2.size());
+      CHECK_EQ(3, dist_2[1].value_or(-1));
+      CHECK_EQ(0, dist_2[2].value_or(-1));
+      CHECK_EQ(6, dist_2[3].value_or(-1));
     }
 
     SUBCASE("distance from 3") {
-    M dist_3 = g.Dijkstra(3);
-    CHECK_EQ(3, dist_3.size());
-    CHECK_EQ(3, dist_3[1].value_or(-1));
-    CHECK_EQ(6, dist_3[2].value_or(-1));
-    CHECK_EQ(0, dist_3[3].value_or(-1));
+      M dist_3 = g.Dijkstra(3);
+      CHECK_EQ(3, dist_3.size());
+      CHECK_EQ(3, dist_3[1].value_or(-1));
+      CHECK_EQ(6, dist_3[2].value_or(-1));
+      CHECK_EQ(0, dist_3[3].value_or(-1));
     }
   }
 }
