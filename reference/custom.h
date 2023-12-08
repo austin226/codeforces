@@ -62,6 +62,9 @@ class WeightedGraph {
   const set<N>& GetNodes() const { return nodes; }
 
   void AddEdge(N node_a, N node_b, W weight) {
+    if (!nodes.contains(node_a) || !nodes.contains(node_b)) {
+      throw runtime_error("Cannot connect edge - node not found");
+    }
     E edge = {min(node_a, node_b), max(node_a, node_b), weight};
     edges.push_back(edge);
     neighbors_map.insert({node_a, edge});
