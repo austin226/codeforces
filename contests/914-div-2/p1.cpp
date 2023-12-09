@@ -1,4 +1,3 @@
-// When updating this, also update [.vscode/snippet.cpp.code-snippets]
 
 #include <algorithm>
 #include <cctype>
@@ -140,5 +139,5 @@ class WeightedGraph {
 };
 
 int main() {
-  // $0
+  //
 }
