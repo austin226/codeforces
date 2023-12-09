@@ -163,6 +163,14 @@ using u64 = uint64_t;
 
 #pragma endregion
 
+#pragma region Vectors
+
+#define SORT_VEC(vec) std::sort(vec.begin(), vec.end())
+#define VEC_MIN(vec) std::min_element(vec.begin(), vec.end())
+#define VEC_MAX(vec) std::max_element(vec.begin(), vec.end())
+
+#pragma endregion
+
 int main() {
   // $0
 }
