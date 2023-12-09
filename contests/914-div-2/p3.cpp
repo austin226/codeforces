@@ -19,6 +19,7 @@ struct TestCase {
   uint16_t n;
   uint32_t k;
   vector<uint64_t> a;
+  uint64_t min_element;
 };
 
 int main() {
@@ -40,18 +41,25 @@ int main() {
     // n integers. each in 1..10^18
     vector<uint64_t> a;
     a.reserve(n);
+    uint64_t min_element = numeric_limits<uint64_t>::max();
     for (uint16_t n_i = 0; n_i < n; n_i++) {
       uint64_t a_i;
       cin >> a_i;
+      if (a_i < min_element) {
+        min_element = a_i;
+      }
       a.push_back(a_i);
     }
 
-    tcs.push_back({n, k, a});
+    tcs.push_back({n, k, a, min_element});
   }
 
   // sum of n^2 over all tcs <= 4,000,000
   for (TestCase tc : tcs) {
-    // Print a single int - smallest possitle value of min of tc.a after tc.k
+    vector<uint64_t> arr = tc.a;
+    // Sort arr by difference between indexes
+
+    // Print a single int - smallest possible value of min of tc.a after tc.k
     // operations.
   }
 }
