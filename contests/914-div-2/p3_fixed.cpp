@@ -17,6 +17,7 @@
 using namespace std;
 
 #define SORT_VEC(vec) std::sort(vec.begin(), vec.end())
+#define MIN_MAX(a, b) std::tuple(std::min(a, b), std::max(a, b))
 
 struct TestCase {
   uint16_t n;
@@ -30,29 +31,44 @@ uint64_t solve(TestCase &tc) {
     // After operating on the same pair (i.j) twice, operating on the two new
     // (identical) values results in 0.
     return 0;
-  } else if (tc.k == 1) {
-    // Sort array and output min(a[i], a[i+1]-a[i])
-    SORT_VEC(tc.a);
-    uint64_t ans = tc.a[0];
-    for (uint16_t i = 0; i < tc.n - 1; i++) {
-      uint64_t diff = tc.a[i + 1] - tc.a[i];
-      if (diff < ans) {
-        ans = diff;
+  }
+
+  SORT_VEC(tc.a);
+  uint64_t ans = tc.a[0];
+  for (uint16_t i = 0; i < tc.n - 1; i++) {
+    uint64_t diff = tc.a[i + 1] - tc.a[i];
+    if (diff < ans) {
+      ans = diff;
+    }
+  }
+
+  // k == 1
+  // Sort array and output min(a[i], a[i+1]-a[i])
+  if (tc.k == 1) {
+    return ans;
+  }
+
+  // k == 2
+  // Brute force the operation.
+  // v = |a[i]-a[j]|
+  // If newly created value is v, find smallest a[i] satisfying a[i] >= v
+  // and greatest a[i] satisfying a[i] <= v. Relax the answer on |a[i] - v|.
+  // Consider cases of no operation or one operation. Runs in O(n^2 log n).
+  for (uint16_t i = 0; i < tc.n; i++) {
+    for (uint16_t j = 0; j < i; j++) {
+      uint64_t high, low;
+      tie(high, low) = MIN_MAX(tc.a[i], tc.a[j]);
+      uint64_t v = high - low;
+      uint16_t p = lower_bound(tc.a.begin(), tc.a.end(), v) - tc.a.begin();
+      if (p < tc.n) {
+        ans = min(ans, tc.a[p] - v);
+      }
+      if (p > 0) {
+        ans = min(ans, v - tc.a[p - 1]);
       }
     }
-    return ans;
-  } else {
-    // k == 2
-    // Brute force the operation.
-    // v = |a[i]-a[j]|
-    // If newly created value is v, find smallest
-    // a[i] satisfying a[i] >= v and greatest a[i] satisfying a[i] <= v. Relax
-    // the answer on |a[i] - v|. Consider cases of no operation or one
-    // operation. Runs in O(n^2 log n).
-
-    // TODO unclear how to solve this yet
-    return -1;
   }
+  return ans;
 }
 
 int main() {

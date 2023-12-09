@@ -171,6 +171,12 @@ using u64 = uint64_t;
 
 #pragma endregion
 
+#pragma region Math
+
+#define MIN_MAX(a, b) std::tuple(std::min(a, b), std::max(a, b))
+
+#pragma endregion
+
 int main() {
   // $0
 }
