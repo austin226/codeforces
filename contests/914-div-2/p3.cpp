@@ -40,7 +40,7 @@ int main() {
     // n integers. each in 1..10^18
     vector<uint64_t> a;
     a.reserve(n);
-    for (uint16_t n_i; n_i < n; n_i++) {
+    for (uint16_t n_i = 0; n_i < n; n_i++) {
       uint64_t a_i;
       cin >> a_i;
       a.push_back(a_i);
@@ -49,6 +49,9 @@ int main() {
     tcs.push_back({n, k, a});
   }
 
+  // sum of n^2 over all tcs <= 4,000,000
   for (TestCase tc : tcs) {
+    // Print a single int - smallest possitle value of min of tc.a after tc.k
+    // operations.
   }
 }
