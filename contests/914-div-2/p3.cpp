@@ -57,7 +57,23 @@ int main() {
   // sum of n^2 over all tcs <= 4,000,000
   for (TestCase tc : tcs) {
     vector<uint64_t> arr = tc.a;
-    // Sort arr by difference between indexes
+    // Sort arr
+    sort(arr.begin(), arr.end());
+
+    // Sort arr by diff between elements
+    vector<uint64_t> arr2(tc.n, 0);
+    uint16_t l = 0;
+    uint16_t r = tc.n - 1;
+
+    for (uint16_t i = tc.n - 1; i >= 0; i--) {
+      if (i % 2 == 1) {
+        arr2[i] = arr[l];
+        l++;
+      } else {
+        arr2[i] = arr[r];
+        r--;
+      }
+    }
 
     // Print a single int - smallest possible value of min of tc.a after tc.k
     // operations.
