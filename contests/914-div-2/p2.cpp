@@ -171,5 +171,38 @@ int main() {
     cases.push_back({n, arr});
   }
 
-  
+  for (TestCase tc : cases) {
+    // for each index i in arr, output max # of addl array element
+    // that you can remove if you remove a_i, and then set score to a_i.
+
+    for (uint32_t i = 0; i < tc.n; i++) {
+      // Copy arr
+      vector<uint32_t> arr;
+      copy(tc.arr.begin(), tc.arr.end(), back_inserter(arr));
+
+      // Start score at i and remove item i
+      uint64_t score = (uint64_t)(arr[i]);
+      arr.erase(arr.begin() + i);
+
+      // Sort arr
+      sort(arr.begin(), arr.end());
+
+      // Iterate through remaining elements
+      uint32_t k;
+      for (k = 0; k < tc.n - 1; k++) {
+        if (score >= arr[k]) {
+          score += arr[k];
+        } else {
+          break;
+        }
+      }
+
+      // Print k
+      cout << k;
+      if (i < tc.n - 1) {
+        cout << " ";
+      }
+    }
+    cout << endl;
+  }
 }
