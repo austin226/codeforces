@@ -67,6 +67,7 @@ int main() {
 
     for (uint16_t i = tc.n - 1; i >= 0; i--) {
       if (i % 2 == 1) {
+        // TODO doesn't work...
         arr2[i] = arr[l];
         l++;
       } else {
