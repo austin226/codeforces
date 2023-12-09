@@ -157,6 +157,10 @@ set<Cell> offset_cells(int32_t x, int32_t y, int32_t a, int32_t b) {
   return result;
 }
 
+struct TestCase {
+  int32_t a, b, x_k, y_k, x_q, y_q;
+};
+
 int main() {
   // knights move a spaces in one dir, b spaces in another dir
   // infinite board, cells (x,y) where x and y are ints
@@ -169,11 +173,15 @@ int main() {
   uint16_t n_test_cases;
   cin >> n_test_cases;
 
+  vector<TestCase> test_cases;
+  test_cases.reserve(n_test_cases);
+
   for (uint16_t case_i = 0; case_i < n_test_cases; case_i++) {
     // first line is a and b. each is in 1..100,000,000
     int32_t a, b;
     cin >> a >> b;
 
+    // K and Q are always different cells
     // second line is K pos. each is in 1..100,000,000
     int32_t x_k, y_k;
     cin >> x_k >> y_k;
@@ -182,11 +190,13 @@ int main() {
     int32_t x_q, y_q;
     cin >> x_q >> y_q;
 
-    // K and Q are always different cells
+    test_cases.push_back({a, b, x_k, y_k, x_q, y_q});
+  }
 
+  for (TestCase t : test_cases) {
     // First, find all cells (a,b) away from K
-    set<Cell> k_cells = offset_cells(x_k, y_k, a, b);
-    set<Cell> q_cells = offset_cells(x_q, y_q, a, b);
+    set<Cell> k_cells = offset_cells(t.x_k, t.y_k, t.a, t.b);
+    set<Cell> q_cells = offset_cells(t.x_q, t.y_q, t.a, t.b);
 
     set<Cell> intersect;
     set_intersection(k_cells.begin(), k_cells.end(), q_cells.begin(),
