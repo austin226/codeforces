@@ -16,6 +16,8 @@
 
 using namespace std;
 
+#pragma region Strings
+
 void remove_leading(string& input, const char char_to_remove) {
   input.erase(
       0, std::min(input.find_first_not_of(char_to_remove), input.size() - 1));
@@ -24,6 +26,10 @@ void remove_leading(string& input, const char char_to_remove) {
 void remove_trailing(string& input, const char char_to_remove) {
   input.erase(input.find_last_not_of(char_to_remove) + 1, string::npos);
 }
+
+#pragma endregion
+
+#pragma region Graphs
 
 /// @brief  A weighted edge in a graph.
 /// @tparam N Identifier to use for each node.
@@ -138,6 +144,24 @@ class WeightedGraph {
     }
   }
 };
+
+#pragma endregion
+
+#pragma region Int Types
+
+#define _N_TYPE_MIN(T) std::numeric_limits<T>::min()
+#define _N_TYPE_MAX(T) std::numeric_limits<T>::max()
+
+using i8 = int8_t;
+using i16 = int16_t;
+using i32 = int32_t;
+using i64 = int64_t;
+using u8 = uint8_t;
+using u16 = uint16_t;
+using u32 = uint32_t;
+using u64 = uint64_t;
+
+#pragma endregion
 
 int main() {
   // $0
