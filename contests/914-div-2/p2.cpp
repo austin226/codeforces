@@ -175,30 +175,41 @@ int main() {
     // for each index i in arr, output max # of addl array element
     // that you can remove if you remove a_i, and then set score to a_i.
 
+    // sort indexes of arr
+    vector<uint32_t> indexes;
+    indexes.reserve(tc.n);
     for (uint32_t i = 0; i < tc.n; i++) {
-      // Copy arr
-      vector<uint32_t> arr;
-      copy(tc.arr.begin(), tc.arr.end(), back_inserter(arr));
+      indexes.push_back(i);
+    }
+    vector<uint32_t> arr = tc.arr;
+    sort(indexes.begin(), indexes.end(),
+         [arr](uint32_t a, uint32_t b) { return arr[a] < arr[b]; });
 
-      // Start score at i and remove item i
+    for (uint32_t i = 0; i < tc.n; i++) {
+      // Start score at i
+      uint32_t initial_score = arr[i];
       uint64_t score = (uint64_t)(arr[i]);
-      arr.erase(arr.begin() + i);
 
-      // Sort arr
-      sort(arr.begin(), arr.end());
-
-      // Iterate through remaining elements
-      uint32_t k;
-      for (k = 0; k < tc.n - 1; k++) {
-        if (score >= arr[k]) {
-          score += arr[k];
+      // Iterate through elements other than the first instance of arr[i];
+      bool has_seen_initial_score = false;
+      uint32_t ans = 0;
+      for (uint32_t k : indexes) {
+        uint32_t a = arr[k];
+        if (score >= a) {
+          if (a == initial_score && !has_seen_initial_score) {
+            // Don't add initial score
+            has_seen_initial_score = true;
+          } else {
+            score += a;
+            ans++;
+          }
         } else {
           break;
         }
       }
 
-      // Print k
-      cout << k;
+      // Print ans
+      cout << ans;
       if (i < tc.n - 1) {
         cout << " ";
       }
