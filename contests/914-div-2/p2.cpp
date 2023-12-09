@@ -138,6 +138,38 @@ class WeightedGraph {
   }
 };
 
+struct TestCase {
+  // n in 1..100,000
+  // length of arr
+  uint32_t n;
+
+  // each element in 1..1,000,000,000
+  vector<uint32_t> arr;
+};
+
+// https://codeforces.com/contest/1904/problem/B
 int main() {
-  //
+  // t test cases 1..=5000
+  // sum of all t.n <= 100,000
+  uint16_t t;
+  cin >> t;
+
+  vector<TestCase> cases;
+  cases.reserve(t);
+  for (uint16_t case_i = 0; case_i < t; case_i++) {
+    uint32_t n;
+    cin >> n;
+
+    vector<uint32_t> arr;
+    arr.reserve(n);
+    for (uint32_t i = 0; i < n; i++) {
+      int32_t k;
+      cin >> k;
+      arr.push_back(k);
+    }
+
+    cases.push_back({n, arr});
+  }
+
+  
 }
