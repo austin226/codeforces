@@ -140,31 +140,58 @@ class WeightedGraph {
 
 // https://codeforces.com/contest/1904/problem/A
 
+using Cell = pair<int32_t, int32_t>;
+
+set<Cell> offset_cells(int32_t x, int32_t y, int32_t a, int32_t b) {
+  set<Cell> result;
+
+  result.insert({x + a, y + b});
+  result.insert({x + a, y - b});
+  result.insert({x - a, y + b});
+  result.insert({x - a, y - b});
+  result.insert({x + b, y + a});
+  result.insert({x + b, y - a});
+  result.insert({x - b, y + a});
+  result.insert({x - b, y - a});
+
+  return result;
+}
+
 int main() {
   // knights move a spaces in one dir, b spaces in another dir
   // infinite board, cells (x,y) where x and y are ints
   // K and Q are on cells (xk, yk), and (xq, yq)
 
   // Find the # positions such that if a N was on that cell,
-  // it would fork K and Q
+  // it would fork K and Q.
 
   // 0..=1000 test cases
   uint16_t n_test_cases;
   cin >> n_test_cases;
 
-  for (int case_i = 0; case_i < n_test_cases; case_i++) {
+  for (uint16_t case_i = 0; case_i < n_test_cases; case_i++) {
     // first line is a and b. each is in 1..100,000,000
-    uint32_t a, b;
+    int32_t a, b;
     cin >> a >> b;
 
     // second line is K pos. each is in 1..100,000,000
-    uint32_t x_k, y_k;
+    int32_t x_k, y_k;
     cin >> x_k >> y_k;
 
     // third line is Q pos. each is in 1..100,000,000
-    uint32_t x_q, y_q;
+    int32_t x_q, y_q;
     cin >> x_q >> y_q;
 
-    
+    // K and Q are always different cells
+
+    // First, find all cells (a,b) away from K
+    set<Cell> k_cells = offset_cells(x_k, y_k, a, b);
+    set<Cell> q_cells = offset_cells(x_q, y_q, a, b);
+
+    set<Cell> intersect;
+    set_intersection(k_cells.begin(), k_cells.end(), q_cells.begin(),
+                     q_cells.end(), inserter(intersect, intersect.begin()));
+
+    cout << intersect.size() << endl;
   }
 }
