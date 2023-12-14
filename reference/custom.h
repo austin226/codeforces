@@ -152,28 +152,50 @@ class WeightedGraph {
 #define _N_TYPE_MIN(T) std::numeric_limits<T>::min()
 #define _N_TYPE_MAX(T) std::numeric_limits<T>::max()
 
-using i8 = int8_t;
-using i16 = int16_t;
-using i32 = int32_t;
-using i64 = int64_t;
-using u8 = uint8_t;
-using u16 = uint16_t;
-using u32 = uint32_t;
-using u64 = uint64_t;
+#define ll long long
+#define ull unsigned long long
+#define ui unsigned int
+#define us unsigned short
 
 #pragma endregion
 
 #pragma region Vectors
 
+#define SZ(x) ((int)((x).size()))
 #define SORT_VEC(vec) std::sort(vec.begin(), vec.end())
 #define VEC_MIN(vec) std::min_element(vec.begin(), vec.end())
 #define VEC_MAX(vec) std::max_element(vec.begin(), vec.end())
+#define pb push_back
+typedef pair<int, int> ii;
+typedef vector<int> vi;
+typedef vector<vi> vvi;
 
 #pragma endregion
 
 #pragma region Math
 
 #define MIN_MAX(a, b) std::tuple(std::min(a, b), std::max(a, b))
+#define PI 3.1415926535897932384626
+
+#pragma endregion
+
+#pragma region IO
+
+template <typename T, typename TT>
+ostream& operator<<(ostream& s, pair<T, TT> t) {
+  return s << "(" << t.first << "," << t.second << ")";
+}
+template <typename T>
+ostream& operator<<(ostream& s, vector<T> t) {
+  F(i, 0, SZ(t)) s << t[i] << " ";
+  return s;
+}
+
+#pragma endregion
+
+#pragma region Loops
+
+#define F(i, L, R) for (int i = L; i < R; i++)
 
 #pragma endregion
 
