@@ -1,4 +1,4 @@
-// When updating this, also update [.vscode/snippet.cpp.code-snippets]
+// https://codeforces.com/problemset/problem/433/B
 
 #include <algorithm>
 #include <cctype>
@@ -167,7 +167,6 @@ class WeightedGraph {
 
 #pragma region Vectors
 
-#define F(i, L, R) for (int i = L; i < R; i++)
 #define SZ(x) ((int)((x).size()))
 #define SORT_VEC(vec) std::sort(vec.begin(), vec.end())
 #define VEC_MIN(vec) std::min_element(vec.begin(), vec.end())
@@ -201,5 +200,42 @@ ostream& operator<<(ostream& s, vector<T> t) {
 #pragma endregion
 
 int main() {
-  // $0
+  ui n;
+  cin >> n;
+
+  vi v(n + 1);
+  F(i, 1, n + 1) { cin >> v[i]; }
+
+  vi prefix_sums(n + 1);
+  prefix_sums[0] = 0;
+  F(i, 1, n + 1) { prefix_sums[i] = prefix_sums[i - 1] + v[i - 1]; }
+
+  ui m;
+  cin >> m;
+
+  vector<tuple<us, int, int>> queries(m);
+  F(i, 0, m) {
+    us type;
+    int l, r;
+    cin >> type >> l >> r;
+    queries[i] = {type, l, r};
+  }
+  F(i, 0, m) {
+    us type;
+    int l, r;
+    tie(type, l, r) = queries[i];
+    if (type == 1) {
+      // answer q1
+      int ans = prefix_sums[r] - prefix_sums[l] + v[r];
+      cout << ans << endl;
+    } else if (type == 2) {
+      // answer q2
+      // TODO
+      cout << 0 << endl;
+    } else {
+      cout << "type " << type << endl;
+    }
+  }
+
+  cout << prefix_sums << endl;
 }
