@@ -204,21 +204,21 @@ int main() {
   ui n;
   cin >> n;
 
-  vi v(n + 1);
+  vector<ull> v(n + 1);
   F(i, 1, n + 1) { cin >> v[i]; }
 
   // sorted v
-  vi u(n + 1);
+  vector<ull> u(n + 1);
   COPY_VEC(v, u);
   SORT_VEC(u);
 
   // Prefix sums of v
-  vi p_v(n + 1);
+  vector<ull> p_v(n + 1);
   p_v[0] = 0;
   F(i, 1, n + 1) { p_v[i] = p_v[i - 1] + v[i - 1]; }
 
   // Prefix sums of u
-  vi p_u(n + 1);
+  vector<ull> p_u(n + 1);
   p_u[0] = 0;
   F(i, 1, n + 1) { p_u[i] = p_u[i - 1] + u[i - 1]; }
 
@@ -236,16 +236,12 @@ int main() {
     us type;
     int l, r;
     tie(type, l, r) = queries[i];
+    ull ans;
     if (type == 1) {
-      // answer q1
-      int ans = p_v[r] - p_v[l] + v[r];
-      cout << ans << endl;
-    } else if (type == 2) {
-      // answer q2
-      int ans = p_u[r] - p_u[l] + u[r];
-      cout << ans << endl;
+      ans = p_v[r] - p_v[l] + v[r];
     } else {
-      cout << "type " << type << endl;
+      ans = p_u[r] - p_u[l] + u[r];
     }
+    cout << ans << endl;
   }
 }
