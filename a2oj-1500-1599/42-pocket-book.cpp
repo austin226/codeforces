@@ -1,4 +1,4 @@
-// https://codeforces.com/problemset/problem/433/B
+// http://codeforces.com/problemset/problem/152/C
 
 #include <algorithm>
 #include <cctype>
@@ -200,13 +200,28 @@ ostream& operator<<(ostream& s, vector<T> t) {
 
 #pragma endregion
 
+const ull M = 1000000007;
+
 int main() {
   us n, m;
   cin >> n >> m;
 
+  // rows are positions, cols are frequency of a letter in that pos.
+  vector<set<char>> letters;
+  F(i, 0, m) {
+    set<char> s;
+    letters.pb(s);
+  }
+
   F(i, 0, n) {
     string name;
     cin >> name;
-    cout << name << endl;
+
+    F(c_i, 0, name.length()) { letters[c_i].insert(name[c_i]); }
   }
+
+  ull ans = 1;
+  F(i, 0, m) { ans = (ans * letters[i].size()) % M; }
+
+  cout << ans << endl;
 }
