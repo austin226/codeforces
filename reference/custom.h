@@ -172,6 +172,7 @@ class WeightedGraph {
 #define SORT_VEC(vec) std::sort(vec.begin(), vec.end())
 #define VEC_MIN(vec) std::min_element(vec.begin(), vec.end())
 #define VEC_MAX(vec) std::max_element(vec.begin(), vec.end())
+#define COPY_VEC(vec1, vec2) std::copy(vec1.begin(), vec1.end(), vec2.begin(), vec2.end())
 #define pb push_back
 typedef pair<int, int> ii;
 typedef vector<int> vi;

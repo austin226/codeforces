@@ -169,6 +169,7 @@ class WeightedGraph {
 
 #define SZ(x) ((int)((x).size()))
 #define SORT_VEC(vec) std::sort(vec.begin(), vec.end())
+#define COPY_VEC(vec1, vec2) std::copy(vec1.begin(), vec1.end(), vec2.begin())
 #define VEC_MIN(vec) std::min_element(vec.begin(), vec.end())
 #define VEC_MAX(vec) std::max_element(vec.begin(), vec.end())
 #define pb push_back
@@ -206,9 +207,20 @@ int main() {
   vi v(n + 1);
   F(i, 1, n + 1) { cin >> v[i]; }
 
-  vi prefix_sums(n + 1);
-  prefix_sums[0] = 0;
-  F(i, 1, n + 1) { prefix_sums[i] = prefix_sums[i - 1] + v[i - 1]; }
+  // sorted v
+  vi u(n + 1);
+  COPY_VEC(v, u);
+  SORT_VEC(u);
+
+  // Prefix sums of v
+  vi p_v(n + 1);
+  p_v[0] = 0;
+  F(i, 1, n + 1) { p_v[i] = p_v[i - 1] + v[i - 1]; }
+
+  // Prefix sums of u
+  vi p_u(n + 1);
+  p_u[0] = 0;
+  F(i, 1, n + 1) { p_u[i] = p_u[i - 1] + u[i - 1]; }
 
   ui m;
   cin >> m;
@@ -226,16 +238,14 @@ int main() {
     tie(type, l, r) = queries[i];
     if (type == 1) {
       // answer q1
-      int ans = prefix_sums[r] - prefix_sums[l] + v[r];
+      int ans = p_v[r] - p_v[l] + v[r];
       cout << ans << endl;
     } else if (type == 2) {
       // answer q2
-      // TODO
-      cout << 0 << endl;
+      int ans = p_u[r] - p_u[l] + u[r];
+      cout << ans << endl;
     } else {
       cout << "type " << type << endl;
     }
   }
-
-  cout << prefix_sums << endl;
 }
