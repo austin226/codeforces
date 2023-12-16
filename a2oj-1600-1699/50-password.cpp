@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cctype>
 #include <cmath>
+#include <iomanip>
 #include <iostream>
 #include <limits>
 #include <map>
@@ -10,6 +11,8 @@
 #include <set>
 #include <sstream>
 #include <string>
+#include <string_view>
+#include <type_traits>
 #include <vector>
 
 using namespace std;
@@ -30,6 +33,8 @@ void remove_leading(string& input, const char char_to_remove) {
 void remove_trailing(string& input, const char char_to_remove) {
   input.erase(input.find_last_not_of(char_to_remove) + 1, string::npos);
 }
+
+#define STR_CONTAINS(s1, s2) s1.find(s2) != std::string::npos
 
 #pragma endregion
 
@@ -202,5 +207,31 @@ ostream& operator<<(ostream& s, vector<T> t) {
 
 // https://codeforces.com/problemset/problem/126/B
 int main() {
-  // $0
+  string s;
+  cin >> s;
+
+  bool match_found = false;
+  string the_match = "Just a legend";
+  for (int r = s.length(); r >= 1; r--) {
+    if (s[0] == s[r]) {
+      int l = 0;
+      while (r + l < s.length() && s[l] == s[r + l]) {
+        l++;
+      }
+      if (r + l == s.length()) {
+        // match found
+        string match = s.substr(r, s.length() - r);
+        // Find match in middle
+        string substr = s.substr(1, s.length() - 2);
+        if (STR_CONTAINS(substr, match)) {
+          the_match = match;
+          match_found = true;
+        } else if (match_found) {
+          break;
+        }
+      }
+    }
+  }
+
+  std::cout << the_match << endl;
 }

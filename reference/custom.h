@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cctype>
 #include <cmath>
+#include <iomanip>
 #include <iostream>
 #include <limits>
 #include <map>
@@ -12,6 +13,8 @@
 #include <set>
 #include <sstream>
 #include <string>
+#include <string_view>
+#include <type_traits>
 #include <vector>
 
 using namespace std;
@@ -32,6 +35,8 @@ void remove_leading(string& input, const char char_to_remove) {
 void remove_trailing(string& input, const char char_to_remove) {
   input.erase(input.find_last_not_of(char_to_remove) + 1, string::npos);
 }
+
+#define STR_CONTAINS(s1, s2) s1.find(s2) != std::string::npos
 
 #pragma endregion
 
@@ -172,7 +177,8 @@ class WeightedGraph {
 #define SORT_VEC(vec) std::sort(vec.begin(), vec.end())
 #define VEC_MIN(vec) std::min_element(vec.begin(), vec.end())
 #define VEC_MAX(vec) std::max_element(vec.begin(), vec.end())
-#define COPY_VEC(vec1, vec2) std::copy(vec1.begin(), vec1.end(), vec2.begin(), vec2.end())
+#define COPY_VEC(vec1, vec2) \
+  std::copy(vec1.begin(), vec1.end(), vec2.begin(), vec2.end())
 #define pb push_back
 typedef pair<int, int> ii;
 typedef vector<int> vi;
