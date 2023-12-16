@@ -39,6 +39,32 @@ using namespace std;
 #define ui unsigned int
 #define us unsigned short
 
+vector<pair<char, int>> largest_subseq(vector<vector<int>> &letter_pos,
+                                       int after_pos, char latest_letter) {
+  vector<pair<char, int>> subseq;
+  int latest_pos = -1;
+  for (char g = latest_letter; g >= 'a' && latest_pos == -1; g--) {
+    int letter_val = g - 'a';
+    vector<int> letter_q = letter_pos[letter_val];
+    F(i, 0, letter_q.size()) {
+      // TODO optimize with binary search
+      if (letter_q[i] > after_pos) {
+        // add to subseq
+        subseq.pb({g, letter_q[i]});
+        latest_pos = letter_q[i];
+      }
+    }
+  }
+  if (latest_pos != -1) {
+    vector<pair<char, int>> subseq2 =
+        largest_subseq(letter_pos, latest_pos, latest_letter - 1);
+    for (auto &a : subseq2) {
+      subseq.pb(a);
+    }
+  }
+  return subseq;
+}
+
 // https://codeforces.com/contest/1905/problem/C
 int main() {
   int t;
@@ -51,32 +77,24 @@ int main() {
     string s;
     cin >> s;
 
-    vector<queue<int>> letter_pos;
+    vector<vector<int>> letter_pos;
     for (char g = 'a'; g <= 'z'; g++) {
-      queue<int> pos_q;
+      vector<int> pos_q;
       letter_pos.push_back(pos_q);
     }
 
     F(i, 0, s.length()) {
       char c = s[i];
       char letter_index = c - 'a';
-      letter_pos[letter_index].push(i);
+      letter_pos[letter_index].pb(i);
       // cout << "Insert " << c << " at " << i << endl;
     }
 
     // Get last letter's first position
-    vector<pair<char, int>> subseq;
-    for (char g = 'z'; g >= 'a'; g--) {
-      int letter_index = g - 'a';
-      queue<int> letter_q = letter_pos[letter_index];
-      while (letter_q.size() > 0) {
-        int pos = letter_q.front();
-        subseq.push_back({g, pos});
-        letter_q.pop();
-      }
-      // TODO i don't want a q, i want a bst of positions
-    }
+    vector<pair<char, int>> subseq = largest_subseq(letter_pos, -1, 'z');
 
-    cout << subseq << endl;
+    for (auto &p : subseq) {
+      cout << "(" << p.first << "," << p.second << ")" << endl;
+    }
   }
 }
