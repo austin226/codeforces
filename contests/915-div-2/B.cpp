@@ -39,13 +39,6 @@ using namespace std;
 #define ui unsigned int
 #define us unsigned short
 
-class Node {
- public:
-  int index;
-
-  Node(int i) : index(i) {}
-};
-
 // https://codeforces.com/contest/1905/problem/B
 int main() {
   int t;
@@ -55,22 +48,26 @@ int main() {
     int n;
     cin >> n;
 
-    map<int, shared_ptr<Node>> nodes;
-    // F(i, 0, n) {
-    //   Node node;
-    //   nodes[i] = node;
-    // }
+    // Track freqencies for each node
+    vector<int> freqs(n);
 
     F(i, 0, n - 1) {
       int u, v;
       cin >> u >> v;
 
-      if (!nodes.contains(u)) {
-        nodes[v] = make_shared<Node>(u);
-      }
-      if (!nodes.contains(v)) {
-        nodes[v] = make_shared<Node>(v);
+      freqs[u - 1]++;
+      freqs[v - 1]++;
+    }
+
+    // Any node with freq=1 is a leaf node
+    int leaves = 0;
+    F(i, 0, n) {
+      if (freqs[i] == 1) {
+        leaves++;
       }
     }
+
+    int ans = (leaves + 1) / 2;
+    cout << ans << endl;
   }
 }
