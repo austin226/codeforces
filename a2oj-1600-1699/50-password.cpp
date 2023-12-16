@@ -205,6 +205,22 @@ ostream& operator<<(ostream& s, vector<T> t) {
 
 #pragma endregion
 
+std::vector<int> kmp_prefix(std::string s) {
+  int n = s.length();
+  std::vector<int> p(n);
+  for (int i = 1; i < n; i++) {
+    int j = p[i - 1];
+    while (j > 0 && s[i] != s[j]) {
+      j = p[j - 1];
+    }
+    if (s[i] == s[j]) {
+      j++;
+    }
+    p[i] = j;
+  }
+  return p;
+}
+
 // https://codeforces.com/problemset/problem/126/B
 // Solution is too slow. See https://codeforces.com/blog/entry/3140.
 // TODO try using z-function https://cp-algorithms.com/string/z-function.html
@@ -232,6 +248,4 @@ int main() {
       }
     }
   }
-
-  std::cout << "Just a legend" << endl;
 }

@@ -36,6 +36,29 @@ void remove_trailing(string& input, const char char_to_remove) {
   input.erase(input.find_last_not_of(char_to_remove) + 1, string::npos);
 }
 
+/**
+ * Prefix function: Knuth–Morris–Pratt algorithm
+ * The prefix function for a n-length string is defined as an array p of length
+ * n, where p[i] is the length of the longest proper prefix of the substring
+ * s[0..i] which is also a suffix of this substring.
+ * @see https://cp-algorithms.com/string/prefix-function.html
+ */
+std::vector<int> kmp_prefix(std::string s) {
+  int n = s.length();
+  std::vector<int> p(n);
+  for (int i = 1; i < n; i++) {
+    int j = p[i - 1];
+    while (j > 0 && s[i] != s[j]) {
+      j = p[j - 1];
+    }
+    if (s[i] == s[j]) {
+      j++;
+    }
+    p[i] = j;
+  }
+  return p;
+}
+
 #define STR_CONTAINS(s1, s2) s1.find(s2) != std::string::npos
 
 #pragma endregion
