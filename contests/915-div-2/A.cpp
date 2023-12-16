@@ -39,6 +39,15 @@ using namespace std;
 #define ui unsigned int
 #define us unsigned short
 
+// https://codeforces.com/contest/1905/problem/A
 int main() {
-  //
+  int t;
+  cin >> t;
+
+  F(t_i, 0, t) {
+    int n, m;
+    cin >> n >> m;
+
+    cout << max(m, n) << endl;
+  }
 }
