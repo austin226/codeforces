@@ -206,13 +206,14 @@ ostream& operator<<(ostream& s, vector<T> t) {
 #pragma endregion
 
 // https://codeforces.com/problemset/problem/126/B
+// Solution is too slow. See https://codeforces.com/blog/entry/3140.
+// TODO try using z-function https://cp-algorithms.com/string/z-function.html
+// or prefix function https://cp-algorithms.com/string/z-function.html
 int main() {
   string s;
   cin >> s;
 
-  bool match_found = false;
-  string the_match = "Just a legend";
-  for (int r = s.length(); r >= 1; r--) {
+  for (int r = 1; r < s.length(); r++) {
     if (s[0] == s[r]) {
       int l = 0;
       while (r + l < s.length() && s[l] == s[r + l]) {
@@ -223,15 +224,14 @@ int main() {
         string match = s.substr(r, s.length() - r);
         // Find match in middle
         string substr = s.substr(1, s.length() - 2);
-        if (STR_CONTAINS(substr, match)) {
-          the_match = match;
-          match_found = true;
-        } else if (match_found) {
-          break;
+        if (substr == match || STR_CONTAINS(substr, match)) {
+          // Found match in middle
+          std::cout << match << endl;
+          return 0;
         }
       }
     }
   }
 
-  std::cout << the_match << endl;
+  std::cout << "Just a legend" << endl;
 }
