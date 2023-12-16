@@ -19,11 +19,31 @@
 
 using namespace std;
 
-#pragma region Loops
-
 #define F(i, L, R) for (int i = L; i < R; i++)
+#define STR_CONTAINS(s1, s2) s1.find(s2) != std::string::npos
 
-#pragma endregion
+#define SZ(x) ((int)((x).size()))
+#define SORT_VEC(vec) std::sort(vec.begin(), vec.end())
+#define VEC_MIN(vec) std::min_element(vec.begin(), vec.end())
+#define VEC_MAX(vec) std::max_element(vec.begin(), vec.end())
+#define COPY_VEC(vec1, vec2) \
+  std::copy(vec1.begin(), vec1.end(), vec2.begin(), vec2.end())
+#define pb push_back
+
+#define MIN_MAX(a, b) std::tuple(std::min(a, b), std::max(a, b))
+#define PI 3.1415926535897932384626
+
+#define _N_TYPE_MIN(T) std::numeric_limits<T>::min()
+#define _N_TYPE_MAX(T) std::numeric_limits<T>::max()
+
+#define ll long long
+#define ull unsigned long long
+#define ui unsigned int
+#define us unsigned short
+
+typedef pair<int, int> ii;
+typedef vector<int> vi;
+typedef vector<vi> vvi;
 
 #pragma region Strings
 
@@ -41,11 +61,11 @@ void remove_trailing(string& input, const char char_to_remove) {
  * The prefix function for a n-length string is defined as an array p of length
  * n, where p[i] is the length of the longest proper prefix of the substring
  * s[0..i] which is also a suffix of this substring.
- * 
- * Example: 
+ *
+ * Example:
  * s = fixprefixsuffix
  * p = 000000123001123
- * 
+ *
  * @see https://cp-algorithms.com/string/prefix-function.html
  */
 std::vector<int> kmp_prefix(std::string s) {
@@ -63,8 +83,6 @@ std::vector<int> kmp_prefix(std::string s) {
   }
   return p;
 }
-
-#define STR_CONTAINS(s1, s2) s1.find(s2) != std::string::npos
 
 #pragma endregion
 
@@ -186,38 +204,39 @@ class WeightedGraph {
 
 #pragma endregion
 
-#pragma region Int Types
-
-#define _N_TYPE_MIN(T) std::numeric_limits<T>::min()
-#define _N_TYPE_MAX(T) std::numeric_limits<T>::max()
-
-#define ll long long
-#define ull unsigned long long
-#define ui unsigned int
-#define us unsigned short
-
-#pragma endregion
-
-#pragma region Vectors
-
-#define F(i, L, R) for (int i = L; i < R; i++)
-#define SZ(x) ((int)((x).size()))
-#define SORT_VEC(vec) std::sort(vec.begin(), vec.end())
-#define VEC_MIN(vec) std::min_element(vec.begin(), vec.end())
-#define VEC_MAX(vec) std::max_element(vec.begin(), vec.end())
-#define COPY_VEC(vec1, vec2) \
-  std::copy(vec1.begin(), vec1.end(), vec2.begin(), vec2.end())
-#define pb push_back
-typedef pair<int, int> ii;
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-
-#pragma endregion
-
 #pragma region Math
 
-#define MIN_MAX(a, b) std::tuple(std::min(a, b), std::max(a, b))
-#define PI 3.1415926535897932384626
+ull factorial(ui n) {
+  if (n <= 1) {
+    return 1;
+  }
+  ull result = 1;
+  F(i, 2, n) { result *= i; }
+  return result;
+}
+
+/**
+ * @brief Number of permutations arranging r items from a set of n items.
+ *
+ * nPr = n! / (n-r)!
+ */
+ull nPr(ull n, ull r) {
+  ull result = 1;
+  F(i, n - r + 1, n + 1) { result *= i; }
+  return result;
+}
+
+/**
+ * @brief Number of combinations arranging r items from a set of n items.
+ *
+ * nCr = n! / (r! * (n-r)!)
+ */
+ull nCr(ull n, ull r) {
+  r = min(r, n - r);
+  ull result = 1;
+  F(i, 1, r + 1) { result = result * (n - i + 1) / i; }
+  return result;
+}
 
 #pragma endregion
 
