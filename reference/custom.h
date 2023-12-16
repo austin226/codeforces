@@ -41,6 +41,11 @@ void remove_trailing(string& input, const char char_to_remove) {
  * The prefix function for a n-length string is defined as an array p of length
  * n, where p[i] is the length of the longest proper prefix of the substring
  * s[0..i] which is also a suffix of this substring.
+ * 
+ * Example: 
+ * s = fixprefixsuffix
+ * p = 000000123001123
+ * 
  * @see https://cp-algorithms.com/string/prefix-function.html
  */
 std::vector<int> kmp_prefix(std::string s) {

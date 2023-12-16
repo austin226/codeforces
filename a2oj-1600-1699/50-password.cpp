@@ -221,31 +221,35 @@ std::vector<int> kmp_prefix(std::string s) {
   return p;
 }
 
+void no_solution() { cout << "Just a legend" << endl; }
+
 // https://codeforces.com/problemset/problem/126/B
-// Solution is too slow. See https://codeforces.com/blog/entry/3140.
-// TODO try using z-function https://cp-algorithms.com/string/z-function.html
-// or prefix function https://cp-algorithms.com/string/z-function.html
+// Use prefix function. See https://codeforces.com/blog/entry/3140.
 int main() {
   string s;
   cin >> s;
 
-  for (int r = 1; r < s.length(); r++) {
-    if (s[0] == s[r]) {
-      int l = 0;
-      while (r + l < s.length() && s[l] == s[r + l]) {
-        l++;
-      }
-      if (r + l == s.length()) {
-        // match found
-        string match = s.substr(r, s.length() - r);
-        // Find match in middle
-        string substr = s.substr(1, s.length() - 2);
-        if (substr == match || STR_CONTAINS(substr, match)) {
-          // Found match in middle
-          std::cout << match << endl;
-          return 0;
-        }
-      }
+  int n = s.length();
+  vi p = kmp_prefix(s);
+
+  int last_p = p[n - 1];
+  if (last_p == 0) {
+    no_solution();
+    return 0;
+  }
+
+  F(i, 0, n - 1) {
+    if (p[i] == last_p) {
+      cout << s.substr(i - last_p + 1, last_p) << endl;
+      return 0;
     }
   }
+
+  int p_p_n = p[p[n - 1] - 1];
+  if (p_p_n == 0) {
+    no_solution();
+    return 0;
+  }
+
+  cout << s.substr(0, p_p_n) << endl;
 }
