@@ -39,19 +39,19 @@ using namespace std;
 #define ui unsigned int
 #define us unsigned short
 
-vector<pair<char, int>> largest_subseq(vector<vector<int>> &letter_pos,
+vector<pair<char, int>> largest_subseq(vector<set<int>> &letter_pos,
                                        int after_pos, char latest_letter) {
   vector<pair<char, int>> subseq;
   int latest_pos = -1;
   for (char g = latest_letter; g >= 'a' && latest_pos == -1; g--) {
     int letter_val = g - 'a';
-    vector<int> letter_q = letter_pos[letter_val];
-    F(i, 0, letter_q.size()) {
-      // TODO optimize with binary search
-      if (letter_q[i] > after_pos) {
+    set<int> letter_q = letter_pos[letter_val];
+    // TODO optimize with binary search
+    for (auto it = letter_q.begin(); it != letter_q.end(); it++) {
+      if (*it > after_pos) {
         // add to subseq
-        subseq.pb({g, letter_q[i]});
-        latest_pos = letter_q[i];
+        subseq.pb({g, *it});
+        latest_pos = *it;
       }
     }
   }
@@ -63,6 +63,47 @@ vector<pair<char, int>> largest_subseq(vector<vector<int>> &letter_pos,
     }
   }
   return subseq;
+}
+
+vector<pair<char, int>> right_shift(vector<pair<char, int>> &subseq) {
+  vector<pair<char, int>> new_subseq;
+  pair<char, int> rightmost = subseq[subseq.size() - 1];
+  new_subseq.pb({rightmost.first, subseq[0].second});
+
+  for (int i = subseq.size() - 1; i > 0; i--) {
+    new_subseq.pb({subseq[i - 1].first, subseq[i].second});
+  }
+  return new_subseq;
+}
+
+int first_unsorted_idx(string &s, string &sorted_s, int at_least) {
+  F(i, at_least, s.length()) {
+    if (s[i] != sorted_s[i]) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+void update_str(string &s, vector<pair<char, int>> &subseq) {
+  for (auto &p : subseq) {
+    s[p.second] = p.first;
+  }
+}
+
+void update_letter_pos(vector<set<int>> &letter_pos,
+                       vector<pair<char, int>> &old_subseq,
+                       vector<pair<char, int>> &new_subseq) {
+  for (auto &p : old_subseq) {
+    int letter_val = p.first - 'a';
+    set<int> letter_q = letter_pos[letter_val];
+    letter_q.erase(p.second);
+  }
+  for (auto &p : new_subseq) {
+    int letter_val = p.first - 'a';
+    set<int> letter_q = letter_pos[letter_val];
+    letter_q.insert(p.second);
+  }
 }
 
 // https://codeforces.com/contest/1905/problem/C
@@ -77,24 +118,49 @@ int main() {
     string s;
     cin >> s;
 
-    vector<vector<int>> letter_pos;
+    vector<set<int>> letter_pos;
     for (char g = 'a'; g <= 'z'; g++) {
-      vector<int> pos_q;
-      letter_pos.push_back(pos_q);
+      set<int> pos_q;
+      letter_pos.pb(pos_q);
     }
 
     F(i, 0, s.length()) {
       char c = s[i];
       char letter_index = c - 'a';
-      letter_pos[letter_index].pb(i);
+      letter_pos[letter_index].insert(i);
       // cout << "Insert " << c << " at " << i << endl;
     }
 
-    // Get last letter's first position
-    vector<pair<char, int>> subseq = largest_subseq(letter_pos, -1, 'z');
+    string sorted_s = s;
+    sort(sorted_s.begin(), sorted_s.end());
 
-    for (auto &p : subseq) {
-      cout << "(" << p.first << "," << p.second << ")" << endl;
+    int operations = 0;
+    int first_unsorted = first_unsorted_idx(s, sorted_s, 0);
+
+    while (first_unsorted != -1) {
+      vector<pair<char, int>> subseq = largest_subseq(letter_pos, -1, 'z');
+
+      vector<pair<char, int>> new_subseq = right_shift(subseq);
+      update_letter_pos(letter_pos, subseq, new_subseq);
+      update_str(s, new_subseq);
+      operations++;
+      first_unsorted = first_unsorted_idx(s, sorted_s, 0);
+      // if (operations > 5) {
+      //   break;
+      // }
+      // cout << "old" << endl;
+      // for (auto &p : subseq) {
+      //   cout << "(" << p.first << "," << p.second << ") ";
+      // }
+      // cout << endl;
+      // cout << "new" << endl;
+      // for (auto &p : new_subseq) {
+      //   cout << "(" << p.first << "," << p.second << ") ";
+      // }
+      // cout << endl;
     }
+    cout << operations << endl;
+
+    // TODO handle not possible
   }
 }

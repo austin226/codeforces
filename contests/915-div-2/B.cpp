@@ -39,6 +39,13 @@ using namespace std;
 #define ui unsigned int
 #define us unsigned short
 
+class Node {
+ public:
+  int index;
+
+  Node(int i) : index(i) {}
+};
+
 // https://codeforces.com/contest/1905/problem/B
 int main() {
   int t;
@@ -48,9 +55,22 @@ int main() {
     int n;
     cin >> n;
 
-    F(i, 1, n) {
+    map<int, shared_ptr<Node>> nodes;
+    // F(i, 0, n) {
+    //   Node node;
+    //   nodes[i] = node;
+    // }
+
+    F(i, 0, n - 1) {
       int u, v;
       cin >> u >> v;
+
+      if (!nodes.contains(u)) {
+        nodes[v] = make_shared<Node>(u);
+      }
+      if (!nodes.contains(v)) {
+        nodes[v] = make_shared<Node>(v);
+      }
     }
   }
 }
