@@ -67,7 +67,8 @@
         "unordered_set": "cpp",
         "xlocmon": "cpp",
         "xloctime": "cpp",
-        "numeric": "cpp"
+        "numeric": "cpp",
+        "unordered_map": "cpp"
     },
     "editor.formatOnSave": true
 }
