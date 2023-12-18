@@ -45,19 +45,48 @@ typedef pair<int, int> ii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
 
+template <typename T, typename TT>
+ostream& operator<<(ostream& s, pair<T, TT> t) {
+  return s << "(" << t.first << "," << t.second << ")";
+}
+template <typename T>
+ostream& operator<<(ostream& s, vector<T> t) {
+  F(i, 0, SZ(t)) s << t[i] << " ";
+  return s;
+}
+
 // https://codeforces.com/problemset/problem/1486/B
+
+ull testcase() {
+  int n;
+  cin >> n;
+
+  vector<ull> x(n);
+  vector<ull> y(n);
+  F(i, 0, n) { cin >> x[i] >> y[i]; }
+
+  if (n <= 1) {
+    return 1;
+  }
+
+  // According to https://codeforces.com/blog/entry/87849, we should already
+  // know: Every point with the smallest summary distance is between left and
+  // right median. So we sort the array, then find elements on positions
+  // floor((n+1)/2) and floor((n+2)/2), then return their difference plus one.
+  SORT_VEC(x);
+  ull factor_x = (ull)x[(n + 2) / 2 - 1] - (ull)x[(n + 1) / 2 - 1] + 1;
+
+  SORT_VEC(y);
+  ull factor_y = (ull)y[(n + 2) / 2 - 1] - (ull)y[(n + 1) / 2 - 1] + 1;
+  return factor_x * factor_y;
+}
+
 int main() {
   int t;
   cin >> t;
 
   F(t_i, 0, t) {
-    int n;
-    cin >> n;
-
-    vi x(n);
-    vi y(n);
-    F(i, 0, n) {
-      cin >> x[i] >> y[i];
-    }
+    ull ans = testcase();
+    cout << ans << endl;
   }
 }
