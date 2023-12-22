@@ -47,6 +47,20 @@ typedef pair<int, int> ii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
 
+#pragma region IO
+
+template <typename T, typename TT>
+ostream& operator<<(ostream& s, pair<T, TT> t) {
+  return s << "(" << t.first << "," << t.second << ")";
+}
+template <typename T>
+ostream& operator<<(ostream& s, vector<T> t) {
+  F(i, 0, SZ(t)) s << t[i] << " ";
+  return s;
+}
+
+#pragma endregion
+
 #pragma region Strings
 
 void remove_leading(string& input, const char char_to_remove) {
@@ -238,20 +252,6 @@ ull nCr(ull n, ull r) {
   ull result = 1;
   F(i, 1, r + 1) { result = result * (n - i + 1) / i; }
   return result;
-}
-
-#pragma endregion
-
-#pragma region IO
-
-template <typename T, typename TT>
-ostream& operator<<(ostream& s, pair<T, TT> t) {
-  return s << "(" << t.first << "," << t.second << ")";
-}
-template <typename T>
-ostream& operator<<(ostream& s, vector<T> t) {
-  F(i, 0, SZ(t)) s << t[i] << " ";
-  return s;
 }
 
 #pragma endregion
