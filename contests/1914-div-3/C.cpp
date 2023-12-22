@@ -69,33 +69,16 @@ void testcase() {
   F(i, 0, n) { cin >> a[i]; }
   F(i, 0, n) { cin >> b[i]; }
 
-  int always_took_a = 0;
-  int greedy = 0;
+  int res = 0;
+  int sum = 0;
   int max_b = 0;
-  int max_b_unlocked = 0;
-  int greedy_last_quest = 0;
-  F(i, 0, k) {
-    if (i > 0 && i <= n) {
-      max_b = max(max_b, b[i - 1]);
-      if (greedy_last_quest >= i - 1) {
-        max_b_unlocked = max_b;
-      }
-    }
-    greedy += max_b_unlocked;
-
-    if (i < n) {
-      always_took_a += a[i];
-    } else {
-      always_took_a += max_b;
-    }
-
-    if (always_took_a > greedy) {
-      greedy = always_took_a;
-      greedy_last_quest = i;
-    }
+  F(i, 0, min(n, k)) {
+    sum += a[i];
+    max_b = max(max_b, b[i]);
+    res = max(res, sum + max_b * (k - i - 1));
   }
 
-  std::cout << greedy << endl;
+  std::cout << res << endl;
 }
 
 int main() {
