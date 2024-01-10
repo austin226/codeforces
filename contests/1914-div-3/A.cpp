@@ -1,23 +1,6 @@
 // https://codeforces.com/contest/1914/problem/A
 
-#include <algorithm>
-#include <cctype>
-#include <cmath>
-#include <iomanip>
-#include <iostream>
-#include <limits>
-#include <map>
-#include <memory>
-#include <numeric>
-#include <optional>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <string>
-#include <string_view>
-#include <type_traits>
-#include <unordered_map>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
