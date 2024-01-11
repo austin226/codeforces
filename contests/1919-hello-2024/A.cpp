@@ -28,6 +28,26 @@ typedef pair<int, int> ii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
 
+//https://codeforces.com/contest/1919/problem/A
+
+void testcase() {
+    int a, b;
+    cin >> a >> b;
+
+    int sum = a + b;
+    if (sum % 2 == 0) {
+        cout << "Bob" << endl;
+    }
+    else {
+        cout << "Alice" << endl;
+    }
+}
+
 int main() {
-    cout << "Hello!" << endl;
+    int t;
+    cin >> t;
+
+    F(i, 0, t) {
+        testcase();
+    }
 }
