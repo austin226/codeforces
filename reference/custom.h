@@ -19,6 +19,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include <bits/stdc++.h>
+
 using namespace std;
 
 #define F(i, L, R) for (int i = L; i < R; i++)
@@ -65,7 +67,7 @@ ostream& operator<<(ostream& s, vector<T> t) {
 
 void remove_leading(string& input, const char char_to_remove) {
   input.erase(
-      0, std::min(input.find_first_not_of(char_to_remove), input.size() - 1));
+    0, std::min(input.find_first_not_of(char_to_remove), input.size() - 1));
 }
 
 void remove_trailing(string& input, const char char_to_remove) {
@@ -126,13 +128,13 @@ struct Edge {
 /// @tparam W Weight of each edge between nodes.
 template <typename N, typename W>
 class WeightedGraph {
- private:
+private:
   using E = Edge<N, W>;
   std::set<N> nodes;
   std::vector<E> edges;
   std::multimap<N, E> neighbors_map;
 
- public:
+public:
   WeightedGraph() {}
   WeightedGraph(size_t size) { edges.reserve(size); }
 
@@ -144,10 +146,10 @@ class WeightedGraph {
     if (!nodes.contains(node_a) || !nodes.contains(node_b)) {
       throw runtime_error("Cannot connect edge - node not found");
     }
-    E edge = {min(node_a, node_b), max(node_a, node_b), weight};
+    E edge = { min(node_a, node_b), max(node_a, node_b), weight };
     edges.push_back(edge);
-    neighbors_map.insert({node_a, edge});
-    neighbors_map.insert({node_b, edge});
+    neighbors_map.insert({ node_a, edge });
+    neighbors_map.insert({ node_b, edge });
   }
 
   /// @brief Uses Dijkstra's algorithm to calculate the shortest distance from
@@ -168,7 +170,7 @@ class WeightedGraph {
       }
 
       W priority = dist[node].value_or(std::numeric_limits<W>::max());
-      q.push({priority, node});
+      q.push({ priority, node });
     }
 
     while (!q.empty()) {
@@ -193,7 +195,7 @@ class WeightedGraph {
           // we instead just add another instance of v at lower
           // priority.
           // https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-using-priority_queue-stl/
-          q.push({alt_dist, v});
+          q.push({ alt_dist, v });
         }
       }
     }
@@ -209,7 +211,8 @@ class WeightedGraph {
         string d;
         if (distances[other_node].has_value()) {
           d = std::to_string(distances[other_node].value());
-        } else {
+        }
+        else {
           d = "unknown";
         }
         std::cout << "to " << other_node << ": " << d << std::endl;
