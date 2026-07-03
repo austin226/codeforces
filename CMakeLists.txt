@@ -59,4 +59,5 @@ add_executable(codeforces
         virt-contests/61/d-eternal-victory.cpp
         virt-contests/61/e-enemy-is-weak.cpp
         a2oj-under-1300/271-beautiful-year/main.cpp
-        a2oj-under-1300/275-lights-out/main.cpp)
+        a2oj-under-1300/275-lights-out/main.cpp
+        a2oj-under-1300/266-stones-on-the-table/main.cpp)
