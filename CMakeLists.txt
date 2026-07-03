@@ -62,4 +62,5 @@ add_executable(codeforces
         a2oj-under-1300/275-lights-out/main.cpp
         a2oj-under-1300/266-stones-on-the-table/main.cpp
         a2oj-under-1300/80-panoramixs-prediction/main.cpp
-        a2oj-under-1300/233-perfect-permutation/main.cpp)
+        a2oj-under-1300/233-perfect-permutation/main.cpp
+        a2oj-under-1300/200-b-drinks/main.cpp)
