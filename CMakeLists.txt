@@ -1,0 +1,60 @@
+cmake_minimum_required(VERSION 4.2)
+project(codeforces)
+
+set(CMAKE_CXX_STANDARD 14)
+
+include_directories(reference)
+
+add_executable(codeforces
+        a2oj-1500-1599/1-presents.cpp
+        a2oj-1500-1599/35-kuriyama-mirai-stones.cpp
+        a2oj-1500-1599/42-pocket-book.cpp
+        a2oj-1600-1699/50-password.cpp
+        a2oj-under-1300/1-young-physicist/main.cpp
+        a2oj-under-1300/2-beautiful-matrix/main.cpp
+        a2oj-under-1300/3-queue-school/main.cpp
+        a2oj-under-1300/30-effective-approach/main.cpp
+        a2oj-under-1300/31-dima-and-friends/main.cpp
+        a2oj-under-1300/4-borze/main.cpp
+        a2oj-under-1300/88-iq-test/main.cpp
+        a2oj-under-1300/94-free-cash/main.cpp
+        a2oj-under-1300/97-appleman-card-game/main.cpp
+        contests/1914-div-3/A.cpp
+        contests/1914-div-3/B.cpp
+        contests/1914-div-3/C.cpp
+        contests/1919-hello-2024/A.cpp
+        contests/914-div-2/p1.cpp
+        contests/914-div-2/p2.cpp
+        contests/914-div-2/p3.cpp
+        contests/914-div-2/p3_fixed.cpp
+        contests/914-div-2/p4.cpp
+        contests/914-div-2/p5.cpp
+        contests/915-div-2/A.cpp
+        contests/915-div-2/B.cpp
+        contests/915-div-2/C.cpp
+        contests/915-div-2/D.cpp
+        contests/915-div-2/E.cpp
+        contests/915-div-2/F.cpp
+        misc/1486-b-eastern-exhibition.cpp
+        misc/1912-k-kims-quest.cpp
+        misc/1912-l-lol-lovers.cpp
+        reference/algorithms.cpp
+        reference/containers.cpp
+        reference/custom.h
+        reference/custom_tests.cpp
+        reference/doctest.h
+        reference/pair.cpp
+        virt-contests/144/a-arrival-of-the-general.cpp
+        virt-contests/144/b-meeting.cpp
+        virt-contests/144/c-anagram-search.cpp
+        virt-contests/144/d-missile-silos.cpp
+        virt-contests/144/e-competition.cpp
+        virt-contests/2009/a-minimize.cpp
+        virt-contests/2009/b-osu.cpp
+        virt-contests/2009/c-freya.cpp
+        virt-contests/2009/d-satyam-counting.cpp
+        virt-contests/61/a-ultra-fast-math.cpp
+        virt-contests/61/b-hard-work.cpp
+        virt-contests/61/c-capture-valerian.cpp
+        virt-contests/61/d-eternal-victory.cpp
+        virt-contests/61/e-enemy-is-weak.cpp)
